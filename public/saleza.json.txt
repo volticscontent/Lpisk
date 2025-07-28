@@ -1,0 +1,57 @@
+[
+  {
+    "nodes": [
+      {
+        "parameters": {
+          "fieldToEvaluate": "={{ new Date($json.date).getTime() < Date.now() - (3 * 3600 * 1000 + 6000) ? 'antigo' : 'recente' }}"
+        },
+        "name": "Switch Tempo",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 1,
+        "position": [
+          600,
+          300
+        ],
+        "notes": "Verifica se o timestamp da mensagem é antigo (> 3h e 6s)"
+      },
+      {
+        "parameters": {
+          "amount": 5,
+          "unit": "seconds"
+        },
+        "name": "Wait 5s",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1,
+        "position": [
+          800,
+          400
+        ]
+      },
+      {
+        "parameters": {},
+        "name": "Processar Mensagem Direto",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          800,
+          200
+        ],
+        "notes": "Aqui segue direto se for mensagem antiga"
+      }
+    ],
+    "connections": {
+      "Switch Tempo": [
+        {
+          "node": "Processar Mensagem Direto",
+          "type": "main",
+          "index": 0
+        },
+        {
+          "node": "Wait 5s",
+          "type": "main",
+          "index": 1
+        }
+      ]
+    }
+  }
+]

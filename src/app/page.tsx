@@ -6,30 +6,14 @@ import { useState } from 'react'
 // Declare fbq for TypeScript
 declare global {
   interface Window {
-    fbq: unknown;
+    fbq: (...args: unknown[]) => void;
   }
 }
 
-// Meta Pixel tracking function
-const trackCTAClick = (sectionId: number, ctaType: string, buttonText: string) => {
+// Meta Pixel tracking function for numbered CTAs
+const trackLandingCTA = (ctaNumber: number) => {
   if (typeof window !== 'undefined' && window.fbq) {
-    window.fbq('track', 'Lead', {
-      content_name: `Seção ${sectionId} - ${ctaType}`,
-      content_category: 'CTA Click',
-      value: sectionId,
-      currency: 'BRL',
-      custom_parameter_1: `secao_${sectionId}`,
-      custom_parameter_2: ctaType,
-      custom_parameter_3: buttonText
-    })
-    
-    // Track custom event for better organization
-    window.fbq('trackCustom', `CTA_Secao_${sectionId}`, {
-      section: sectionId,
-      cta_type: ctaType,
-      button_text: buttonText,
-      timestamp: new Date().toISOString()
-    })
+    window.fbq('trackCustom', `LCta-click-${ctaNumber}`)
   }
 }
 
@@ -147,7 +131,7 @@ export default function Home() {
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-block bg-gradient-to-r rounded-lg shadow-lg shadow-green-500/50 from-green-500 via-green-600 to-green-700 text-white px-8 py-3 text-base hover:bg-gray-800 transition-colors cursor-pointer"
-                        onClick={() => trackCTAClick(section.id, 'Banner', section.buttonText)}
+                        onClick={() => trackLandingCTA(1)}
                       >
                         {section.buttonText}
                       </a>
@@ -320,7 +304,7 @@ export default function Home() {
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 bg-black-900/50 shadow-lg shadow-green-500/50 bg-gradient-to-r from-green-500 via-green-600 to-green-700 border-2 border-[#00ff41] text-[#fffff] font-bold py-3 px-8 rounded-2xl hover:bg-[#00ff41] hover:text-black transition-all duration-300 cursor-pointer"
-                        onClick={() => trackCTAClick(section.id, 'Continue', section.buttonText)}
+                        onClick={() => trackLandingCTA(2)}
                       >
                         {section.buttonText}
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
@@ -541,7 +525,7 @@ export default function Home() {
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-block bg-gradient-to-r from-green-600 via-green-500 to-green-700 shadow-lg shadow-green-400/25 border-1 border-gray-500/50 text-white font-bold text-lg px-10 py-4 rounded-lg hover:scale-105 transition-all duration-300 cursor-pointer"
-              onClick={() => trackCTAClick(section.id, 'Join Mentoria', 'QUERO ME JUNTAR À MENTORIA')}
+              onClick={() => trackLandingCTA(3)}
             >
               QUERO ME JUNTAR À MENTORIA
             </a>
@@ -570,7 +554,7 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full bg-gradient-to-r shadow-lg shadow-black/10 border-1 border-gray-500/50 text-gray-900 font-light py-4 px-6 rounded-lg text-sm leading-tight hover:bg-gray-800 transition-all duration-300 hover:scale-105 cursor-pointer"
-                    onClick={() => trackCTAClick(3, 'Benefit', benefit)}
+                    onClick={() => trackLandingCTA(4)}
                   >
                     {benefit}
                   </a>
